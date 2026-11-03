@@ -22,26 +22,28 @@ public sealed class DataSeeder(LambdaBridge bridge, FakeCognito cognito, ILogger
         ("guest@example.com", "Andrii", "Customer", null),
     ];
 
-    private static readonly (string Id, string Address, string Description, double Rating, string Occupancy)[] Locations =
+    private static readonly (string Id, string Address, string Description, double Rating, string Occupancy, string Image)[] Locations =
     [
-        ("loc-1", "48 Rustaveli Avenue", "Our flagship restaurant in the city centre with a cosy terrace and seasonal menu.", 4.8, "78%"),
-        ("loc-2", "14 Deribasivska Street", "A bright family place near the park, famous for fresh salads and desserts.", 4.6, "64%"),
-        ("loc-3", "3 Frantsuzkyi Boulevard", "A quiet place by the sea with a large hall for group celebrations.", 4.5, "52%"),
+        ("loc-1", "48 Rustaveli Avenue", "Our flagship restaurant in the city centre with a cosy terrace and seasonal menu.", 4.8, "78%", "/assets/img/locations/rustaveli-avenue-48.jpg"),
+        ("loc-2", "14 Baratashvili Street", "A bright family place near the park, famous for fresh salads and desserts.", 4.6, "64%", "/assets/img/locations/baratashvili-street-14.jpg"),
+        ("loc-3", "9 Abashidze Street", "A quiet place with a large hall for group celebrations.", 4.5, "52%", "/assets/img/locations/abashidze-street-9.jpg"),
     ];
 
-    private static readonly (string Name, DishType Type, decimal Price, string Weight, string Calories, string Description)[] Menu =
+    private const string DishPlaceholder = "/assets/img/dish.png";
+
+    private static readonly (string Name, DishType Type, decimal Price, string Weight, string Calories, string Description, string Image)[] Menu =
     [
-        ("Fresh Greek Salad", DishType.Appetizer, 8.50m, "250 g", "320 kcal", "Tomatoes, cucumbers, feta, olives and red onion with olive oil."),
-        ("Caesar Salad", DishType.Appetizer, 9.00m, "280 g", "410 kcal", "Romaine, grilled chicken, parmesan and crispy croutons."),
-        ("Bruschetta Trio", DishType.Appetizer, 7.00m, "200 g", "290 kcal", "Toasted bread with tomato, mushroom and avocado toppings."),
-        ("Tom Yum Soup", DishType.Appetizer, 10.50m, "350 g", "260 kcal", "Spicy and sour Thai soup with shrimps and mushrooms."),
-        ("Grilled Salmon", DishType.MainCourse, 18.00m, "320 g", "540 kcal", "Salmon fillet with lemon butter, asparagus and baby potatoes."),
-        ("Chicken Teriyaki Bowl", DishType.MainCourse, 13.50m, "400 g", "620 kcal", "Rice, glazed chicken, edamame, carrot and sesame."),
-        ("Beef Burger", DishType.MainCourse, 14.00m, "380 g", "780 kcal", "Beef patty, cheddar, pickles and house sauce with fries."),
-        ("Vegetable Risotto", DishType.MainCourse, 12.00m, "330 g", "480 kcal", "Creamy arborio rice with seasonal vegetables and parmesan."),
-        ("Cheesecake", DishType.Dessert, 6.50m, "150 g", "390 kcal", "Classic New York cheesecake with berry sauce."),
-        ("Chocolate Lava Cake", DishType.Dessert, 7.50m, "160 g", "450 kcal", "Warm chocolate cake with a molten centre and vanilla ice cream."),
-        ("Fruit Sorbet", DishType.Dessert, 5.00m, "120 g", "160 kcal", "Three scoops of mango, raspberry and lemon sorbet."),
+        ("Spring Salad", DishType.Appetizer, 8.50m, "250 g", "220 kcal", "Young greens, radish, cucumber and herbs with a light lemon dressing.", "/assets/img/dishes/spring-salad.jpg"),
+        ("Fresh Strawberry Mint Salad", DishType.Appetizer, 9.00m, "230 g", "190 kcal", "Strawberries, mint, spinach and feta with balsamic glaze.", "/assets/img/dishes/fresh-strawberry-mint-salad.jpg"),
+        ("Roasted Sweet Potato and Lentil Salad", DishType.Appetizer, 10.00m, "300 g", "360 kcal", "Roasted sweet potato, green lentils, rocket and tahini dressing.", "/assets/img/dishes/roasted-sweet-potato-and-lentil-salad.jpg"),
+        ("Avocado Pine Nut Bowl", DishType.MainCourse, 13.50m, "350 g", "520 kcal", "Avocado, quinoa, roasted vegetables and toasted pine nuts.", "/assets/img/dishes/avocado-pine-nut-bowl.jpg"),
+        ("Grilled Salmon", DishType.MainCourse, 18.00m, "320 g", "540 kcal", "Salmon fillet with lemon butter, asparagus and baby potatoes.", DishPlaceholder),
+        ("Chicken Teriyaki Bowl", DishType.MainCourse, 13.50m, "400 g", "620 kcal", "Rice, glazed chicken, edamame, carrot and sesame.", DishPlaceholder),
+        ("Beef Burger", DishType.MainCourse, 14.00m, "380 g", "780 kcal", "Beef patty, cheddar, pickles and house sauce with fries.", DishPlaceholder),
+        ("Vegetable Risotto", DishType.MainCourse, 12.00m, "330 g", "480 kcal", "Creamy arborio rice with seasonal vegetables and parmesan.", DishPlaceholder),
+        ("Cheesecake", DishType.Dessert, 6.50m, "150 g", "390 kcal", "Classic New York cheesecake with berry sauce.", DishPlaceholder),
+        ("Chocolate Lava Cake", DishType.Dessert, 7.50m, "160 g", "450 kcal", "Warm chocolate cake with a molten centre and vanilla ice cream.", DishPlaceholder),
+        ("Fruit Sorbet", DishType.Dessert, 5.00m, "120 g", "160 kcal", "Three scoops of mango, raspberry and lemon sorbet.", DishPlaceholder),
     ];
 
     private static readonly int[] TableCapacities = [2, 2, 4, 4, 6, 8];
@@ -97,7 +99,7 @@ public sealed class DataSeeder(LambdaBridge bridge, FakeCognito cognito, ILogger
                     Fats = $"{8 + d} g",
                     Carbohydrates = $"{20 + 2 * d} g",
                     Vitamins = "A, B6, C",
-                    ImageUrl = $"https://picsum.photos/seed/{Uri.EscapeDataString(item.Name.Replace(' ', '-').ToLowerInvariant())}/600/400",
+                    ImageUrl = item.Image,
                     State = l == 2 && d == 3 ? DishState.OutOfStock : DishState.Available,
                     LocationId = loc.Id,
                 }, DynamoConfig.SaveConfig(ResourceNames.DishesTableName), cancellationToken);
@@ -121,7 +123,7 @@ public sealed class DataSeeder(LambdaBridge bridge, FakeCognito cognito, ILogger
                 Description = loc.Description,
                 TotalCapacity = TableCapacities.Sum(),
                 AverageOccupancy = loc.Occupancy,
-                ImageUrl = $"https://picsum.photos/seed/restaurant-{loc.Id}/800/500",
+                ImageUrl = loc.Image,
                 Rating = loc.Rating,
                 SpecialtyDishIds = [dishIds[0], dishIds[4], dishIds[9]],
             }, DynamoConfig.SaveConfig(ResourceNames.LocationsTableName), cancellationToken);
