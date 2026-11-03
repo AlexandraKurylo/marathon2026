@@ -1,0 +1,10 @@
+**/bin
+**/obj
+**/.vs
+**/.idea
+**/syndicate_venv
+**/.venv
+Tests
+docs
+swagger_src
+.syndicate-config-restaurant-backend-app
